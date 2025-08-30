@@ -15,13 +15,14 @@ conda env create -f chimera_env.yml <br/>
 First of all, you need to open the "yaml" file for the corresponding dataset you want to test and modify the paths to the location you are using.
 Then, you can run:
 ```
- python val.py --data ${DATASET}.yaml --model ${WEIGHTS}.pt --channels 5 --split ${SPLIT} --show_sequences ${SEQ}
+ python val.py --data ${DATASET}.yaml --model ${WEIGHTS}.pt --channels ${CH} --split ${SPLIT} --show_sequences ${SEQ}
 ```
 
 **SPLIT**: val, test <br />
 **DATASET**: You can find the "yaml" files inside the "data" folder. Example: "data/gen1/gen1_shist.yaml" <br />
 **WEIGHTS**: They are stored in the "weights" folder. Example: "weights/gen1/chimera-n0-gen1.pt" <br />
-**SEQ**: number of sequences you want to see the predictions, default is 3 
+**SEQ**: number of sequences you want to see the predictions, default is 3 <br />
+**CH**: number of channels. In this work, the value 10 was adopted for all experiments <br />
 
 # Training 
 
