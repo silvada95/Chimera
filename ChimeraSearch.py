@@ -13,21 +13,42 @@ import random
 from sklearn.preprocessing import StandardScaler  # Import StandardScaler
 
 
+ALLOWED_FEATURES = ["macs", "meco", "zen score", "az-train", "az-prog", "az-expr"]
+
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--exp_name', type=str, default="ablation_macs_only")
-    parser.add_argument('--mlp_ratio', type=int, default=5)
-    parser.add_argument('--alpha', type=float, default=0.05)
     parser.add_argument('--population', type=int, default=50)
     parser.add_argument('--iterations', type=int, default=1000)
-    parser.add_argument('--mlp', type=int, default=0)
     parser.add_argument('--max_size', type=int, default=10)
+    parser.add_argument(
+        "-f", "--features",
+        nargs="+",                      # One or more values
+        choices=ALLOWED_FEATURES,       # Restrict to allowed set
+        metavar="FEATURE",
+        help=(
+            "One or more features to enable. "
+            "Choices: " + ", ".join(ALLOWED_FEATURES) + ". "
+            "If a feature contains a space, wrap it in quotes (e.g. \"zen score\")."
+        ),
+        required=True                   # Make it required (remove if optional)
+    )
+    
+    parser.add_argument('--w_macs', type=float, default="0.35", help="weight multipliers for macs")
+    parser.add_argument('--w_meco', type=float, default="0.65", help="weight multipliers for meco")
+    parser.add_argument('--w_zen', type=float, default="0.0", help="weight multipliers for zen score")
+    parser.add_argument('--w_azexpr', type=float, default="0.0", help="weight multipliers for az expr")
+    parser.add_argument('--w_aztrain', type=float, default="0.0", help="weight multipliers for az train")
+    parser.add_argument('--w_azprogr', type=float, default="0.0", help="weight multipliers for az progr")
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
 args = parse_opt()
 
 
+total = args.w_macs + args.w_meco + args.w_zen + args.w_azexpr + args.w_aztrain + args.w_azprogr
+if not math.isclose(total, 1.0, rel_tol=1e-9, abs_tol=1e-9):
+        parser.error(f"--w1 + --w2 + --w3 must sum to 1.0 (got {total:.12f})")
 
 
 ##################### CONFIG CONSTANTS #######################################
@@ -61,6 +82,7 @@ LIBRARY = {
 POPULATION_SIZE = args.population
 ITERATIONS = args.iterations
 MAX_SIZE = args.max_size*1000000
+features = args.features
 
 HEADER = ['nc: 80', 
         'depth_multiple: 1.0', 
@@ -91,9 +113,6 @@ scaler = StandardScaler()
 
 i = 0
 
-#weights = {"macs": 0.431124, "c2fs": 0.468130, "mambas": 0.009464, "maxvits": 0.009538, "mlps": 0.203298, "params": 0.078446}
-#weights = {"meco": 0.65, "macs": 0.35}
-
 
 def makename(exp_name):
   
@@ -119,17 +138,15 @@ exp_name = makename(args.exp_name)
 
 t0 = time.time()
 
-features = ["meco", "macs"]
+#features = ["meco", "macs"]
 
-
-#weights = {"az-expr": 0.4, "macs": 0.6}
-#var_macs= random.uniform(-0.1, 0.1)
-#macs_mult = 0.4*(1 + var_macs)
-#meco_mult = 1 - macs_mult
-
-meco_mult = 0.0
-macs_mult = 1.0
-weights = {"meco": meco_mult, "macs":macs_mult}
+meco_mult = args.w_meco
+macs_mult = args.w_macs
+zen_mult = args.w_zen
+aztrain_mult = args.w_aztrain
+azprogr_mult = args.w_azprogr
+azexpr_mult = args.w_azexpr
+weights = {"meco": meco_mult, "macs":macs_mult, "zen score": zen_mult, "az-train": aztrain_mult, "az-prog": azprogr_mult, "az-expr": azexpr_mult}
 
 compute_meco = "meco" in features
 compute_az = any(az_key in features for az_key in ["az-train", "az-prog", "az-expr"])
@@ -212,13 +229,10 @@ pd_ = pd.DataFrame(data=data)
 it = 0 
 
 
-X = pd_[features].values
-
-X_normalized = scaler.fit_transform(X)
-
-weights = (np.array(list(weights.values())).astype(float))
-
-cscore = weights@(X_normalized.T)
+aligned_weights = np.array([float(weights[f]) for f in features])
+X = pd_[features].to_numpy()
+X_norm = scaler.fit_transform(X)
+cscore = aligned_weights @ X_norm.T
 
 pd_.insert(6, "cscore",cscore)
 
@@ -284,16 +298,9 @@ while it < ITERATIONS:
         if new_ind != pd_["individual"][idx]:
             pd_ = pd_._append(new_row, ignore_index=True)
             
-
-
-            X = pd_[features].values
-
-           
-            # Normalize features
-            X_normalized = scaler.fit_transform(X)
-
-            # Calculate the cscore
-            cscore = weights @ (X_normalized.T)
+            X = pd_[features].to_numpy()
+            X_norm = scaler.fit_transform(X)
+            cscore = aligned_weights @ X_norm.T
             pd_["cscore"] = cscore
 
             # Sort by cscore and remove the lowest
@@ -312,9 +319,8 @@ while it < ITERATIONS:
      os.remove(cfg)
      pass
      
-#macs_mult = 0.4*(1 + var_macs)
-#meco_mult = 1 - macs_mult     
-pd_.to_csv(os.path.join(exp_name, "individuals_it_" + str(ITERATIONS) + "_ind_" + str(POPULATION_SIZE) + "_mlpratio_" + str(args.mlp_ratio) + "size_" + str(args.max_size) + "_macs_" + str(macs_mult)[2:6] +  "_meco_" + str(meco_mult)[2:6]  +".csv"))
+
+pd_.to_csv(os.path.join(exp_name, "individuals_it_" + str(ITERATIONS) + "_ind_" + str(POPULATION_SIZE) + "size_" + str(args.max_size) + "_macs_" + str(macs_mult)[2:6] +  "_meco_" + str(meco_mult)[2:6]  +".csv"))
 print("time necessary to perform the search for 1000 iterations", time.time() - t0)  
 
 
