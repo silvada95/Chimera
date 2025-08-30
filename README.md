@@ -7,7 +7,7 @@ You can read the full paper on: <br/>
 
 # Setting up the environment 
 ```
-conda env create -f chimera_env.yml <br/>
+conda env create -f chimera_env.yml 
 ```
 
 # Executing Chimera-NAS
