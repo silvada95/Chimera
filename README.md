@@ -91,4 +91,10 @@ where: <br />
 **GPUS**: The number of GPUs in your node <br />
 **LIST_OF_GPUS**: The list of the devices from your node. For example, for three GPUs, use [0,1,2] <br />
 
+# Code Acknowledgements
 
+- https://github.com/silvada95/ReYOLOv8
+
+# Cite this work
+
+To be uploaded soon
