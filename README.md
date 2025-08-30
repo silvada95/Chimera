@@ -61,7 +61,7 @@ Where **W0** is the weight decay defined in the hyperparameter files and **W_Dec
 ```
 torchrun --nnodes 1  --nproc_per_node ${GPUS}  train.py --device ${LIST_OF_GPUS} --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --clip_stride ${CLIP_STRIDE}
 ```
-where:
+where: <br />
 **GPUS**: The number of GPUs in your node <br />
 **LIST_OF_GPUS**: The list of the devices from your node. For example, for three GPUs, use [0,1,2] <br />
 
