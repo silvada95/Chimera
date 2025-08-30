@@ -44,6 +44,12 @@ Then, you can run:
 **SEQ**: number of sequences you want to see the predictions, default is 3 <br />
 **CH**: number of channels. In this work, the value 10 was adopted for all experiments <br />
 
+# Datasets adopted in the work
+
+The preprocessed versions from the GEN1 and PeDRo datasets adopted in this work can be found here: 
+
+[preprocessed datasets](https://drive.google.com/file/d/1BwZU5eHsHk0yK0UPbwnz_huDHUF0uROY/view?usp=sharing)
+
 # Training 
 
 # Single-gpu
