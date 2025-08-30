@@ -10,6 +10,26 @@ You can read the full paper on: <br/>
 conda env create -f chimera_env.yml <br/>
 ```
 
+# Executing Chimera-NAS
+
+The general setup for Chimera-NAS is:
+```
+python ChimeraSearch.py --exp_name ${EXP_NAME} --population ${INDIVIDUALS} --iterations ${IT} --max_size ${MAX_PARAMS} --features ${LIST_OF_PROXIES} --w_macs ${W_MACS} --w_meco ${W_MECO} --w_zen ${W_ZEN} --w_azexpr ${W_AZEXPR} --w_aztrain ${W_AZTRAIN} --w_azprogr ${W_AZPROGR}
+```
+where:  <br />
+**EXP_NAME**: Name of the folder where your run will be stored. Default: "chimera-nas" <br />
+**INDIVIDUALS**: Number of individuals in your population. Default is 100. <br />
+**IT**: Number of iterations on the evolutionary search. Default is 1000. <br />
+**MAX_PARAMS**: Maximum number of parameters that an individual from the population can have. It is in the scale of millions already. (If you want 10M, just set it as 10) <br />
+**LIST_OF_PROXIES**: An additive list of proxies that will be used by the search algorithm. The options are "macs", "meco", "zen score", "az-train", "az-prog", "az-expr". <br />
+**W_MACS**, **W_MECO**, **W_ZEN**, **W_AZEXPR**, **W_AZTRAIN**, **W_AZPROGR**: The weights used alongside each proxy. Make sure to align them with your list of proxies. They are float values that must add up to 1.0. They are set to zero as the default. <br />
+
+Here is a usage example, based on the final setup adopted in the paper:
+
+```
+python ChimeraSearch.py --exp_name chimera-nas --population 100 --iterations 1000 --max_size 10 --features "macs" "meco" --w_macs 0.35 --w_meco 0.65
+```
+
 # Evaluating the final architectures from the paper
 
 First of all, you need to open the "yaml" file for the corresponding dataset you want to test and modify the paths to the location you are using.
