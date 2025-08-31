@@ -43,7 +43,7 @@ Then, you can run:
 **WEIGHTS**: They are stored in the "weights" folder. Example: "weights/gen1/chimera-n0-gen1.pt" <br />
 **SEQ**: Number of sequences you want to see the predictions, default is -1 <br />
 **CH**: Number of channels. In this work, the value 10 was adopted for all experiments <br />
-**IMG SIZE**: Image size. We adopted IMGH=256, IMGW=320 <br />
+**IMGH**, **IMGW**: Image size. We adopted IMGH=256, IMGW=320 <br />
 
 # Datasets adopted in the work
 
@@ -54,7 +54,7 @@ The preprocessed versions from the GEN1 and PeDRo datasets adopted in this work 
 # Single-GPU Training 
 
 ```
-python train.py --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --clip_stride ${CLIP_STRIDE}
+python train.py --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --clip_stride ${CLIP_STRIDE} --img ${IMGH} ${IMGW}
 ```
 where:
 
@@ -67,7 +67,8 @@ where:
 **Z**: Zoom-out probability <br />
 **VAL_EPOCH**: Number of epochs to perform validation <br />
 **CLIP_LENGTH**: Length of the clips used for training <br />
-**CLIP_STRIDE**: Distance between different clips. If equal to CLIP_LENGTH, clips will not present overlap.
+**CLIP_STRIDE**: Distance between different clips. If equal to CLIP_LENGTH, clips will not present overlap. <br />
+**IMGH**, **IMGW**: Image size. We adopted IMGH=256, IMGW=320 <br />
 
 To accelerate the training, we adopted some tricks:  <br />
 **1-** We validated only at each 10 epochs <br />
