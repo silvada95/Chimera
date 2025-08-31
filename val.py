@@ -44,6 +44,8 @@ class EventVideoDetectionValidator(BaseValidator):
           if not os.path.exists(os.path.join(self.save_dir, "preds")):
             os.mkdir(os.path.join(self.save_dir, "labels"))
             os.mkdir(os.path.join(self.save_dir, "preds"))
+        if not hasattr(args,"show_sequences"):
+           self.args.show_sequences = -1
     @smart_inference_mode()
     def __call__(self, trainer=None, model=None):
         """
