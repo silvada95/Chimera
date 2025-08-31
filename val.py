@@ -40,6 +40,10 @@ class EventVideoDetectionValidator(BaseValidator):
         self.niou = self.iouv.numel()
         self.imgsz = self.args.imgsz
         self.dtype = torch.cuda.HalfTensor if self.args.half else torch.cuda.FloatTensor
+        if self.args.plots:
+          if not os.path.exists(os.path.join(self.save_dir, "preds")):
+            os.mkdir(os.path.join(self.save_dir, "labels"))
+            os.mkdir(os.path.join(self.save_dir, "preds"))
     @smart_inference_mode()
     def __call__(self, trainer=None, model=None):
         """
@@ -132,10 +136,10 @@ class EventVideoDetectionValidator(BaseValidator):
                 preds = self.postprocess(preds)
             #print("current T:", T, "preprocess:", dt[0].t/(T+1), "inference:", dt[1].t/(T+1), "postprocess:", dt[3].t/(T+1), "tensor shape:", batch_.shape)
             self.update_metrics(preds, batch_, batch,sequence_mask, T)
-            if self.args.plots and batch_i < -1:
+            if self.args.plots and batch_i < self.args.show_sequences:
 
-                self.plot_val_samples(batch_, batch,batch_i)
-                self.plot_predictions(batch_, batch,preds, batch_i)
+                self.plot_val_samples(batch_, batch,batch_i,T,sequence_mask)
+                self.plot_predictions(batch_, batch,preds, batch_i,T)
 
             self.run_callbacks('on_val_batch_end') 
 
@@ -343,22 +347,22 @@ class EventVideoDetectionValidator(BaseValidator):
 
 
 
-    def plot_val_samples(self, batch_, batch, ni):
+    def plot_val_samples(self, batch_, batch, ni,si, seq_mask):
 
         plot_event_images(batch_,
-                    batch['batch_idx'],
-                    batch['cls'].squeeze(-1),
-                    batch['bboxes'],
+                    batch['batch_idx'][seq_mask],
+                    batch['cls'][seq_mask].view(-1),
+                    batch['bboxes'][seq_mask],
                     paths=None,
-                    fname=self.save_dir / f'val_batch{ni}_labels.jpg',
+                    fname=self.save_dir / f'labels/val_batch{ni}_seq{si}_labels.jpg',
                     names=self.names)
 
-    def plot_predictions(self, batch_, batch, preds, ni):
-        print(self.save_dir)
+    def plot_predictions(self, batch_, batch, preds, ni,si):
+
         plot_event_images(batch_,
                     *output_to_target(preds, max_det=15),
                     paths=None,
-                    fname=self.save_dir / f'val_batch{ni}_pred.jpg',
+                    fname=self.save_dir / f'preds/val_batch{ni}_seq{si}_pred.jpg',
                     names=self.names)  # pred
 
     def pred_to_json(self, predn, filename):
@@ -420,7 +424,7 @@ def val(cfg=DEFAULT_CFG,use_python=False):
     parser.add_argument('--cache', type=str, nargs='?', const='ram', help='--cache images in "ram" (default) or "disk"')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--workers', type=int, default=8, help='max dataloader workers (per RANK in DDP mode)')
-    parser.add_argument('--project', default=ROOT / 'runs/train', help='save to project/name')
+    parser.add_argument('--project', default=ROOT / 'runs', help='save to project/name')
     parser.add_argument('--name', default='exp', help='save to project/name')
     parser.add_argument('--exist_ok', action = 'store_true')
     parser.add_argument('--save_txt', action = 'store_true')
@@ -440,6 +444,7 @@ def val(cfg=DEFAULT_CFG,use_python=False):
     parser.add_argument('--plots', action='store_false')
     parser.add_argument('--single_cls', action='store_true')
     parser.add_argument('--verbose', action='store_false')
+    parser.add_argument('--show_sequences', default = -1, type=int)
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
@@ -454,7 +459,7 @@ def val(cfg=DEFAULT_CFG,use_python=False):
  video_config["channels"] = args.channels
  video_config["speed"] = args.speed
  video_config["zero_hidden"] = args.zero_hidden 
-
+ args.project = args.project / args.split
 
  if use_python:
         from ultralytics import YOLO
