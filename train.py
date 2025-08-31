@@ -93,7 +93,7 @@ def parse_opt(known=False):
     parser.add_argument('--suppress',  type=float, default=0.0)  
     parser.add_argument('--positive',  type=float, default=0.0)  
     parser.add_argument('--zoom_out',  type=float, default=0.0)  
-    parser.add_argument('--max_zoom_out_factor',  type=float, default=2.0)  
+    parser.add_argument('--max_zoom_out_factor',  type=float, default=1.2)  
     parser.add_argument('--min_zoom_out_factor',  type=float, default=1.0)  
     parser.add_argument('--tune',  action='store_true')  
     parser.add_argument('--tune_epoch',  type=int, default=300)
