@@ -32,6 +32,7 @@ def network_weight_gaussian_init(net: nn.Module):
     return net
 
 def compute_nas_score(gpu, model, ch, mixup_gamma, resolution, batch_size, repeat, fp16=False):
+    # https://github.com/idstcv/ZenNAS/blob/d1d617e0352733d39890fb64ea758f9c85b28c1a/ZeroShotProxy/compute_zen_score.py#L33
     info = {}
     nas_score_list = []
     if gpu is not None:
