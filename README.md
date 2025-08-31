@@ -91,6 +91,26 @@ where: <br />
 **GPUS**: The number of GPUs in your node <br />
 **LIST_OF_GPUS**: The list of the devices from your node. For example, for three GPUs, use [0,1,2] <br />
 
+
+# Analysis of the Chimera Testbed
+
+The reported results from the paper related to the Chimera Testbed are stored into the "Testbed" sub-folder. The file "testbed_results.csv" has all the proxies and training results from the testbed models. <br />
+```
+cd Testbed
+```
+The first step is to check the distribution of the mAPs across the different event representations: <br />
+```
+python plot_map_format.py
+```
+Then, you can check the different weights derivated through Regression Trees in the paper: <br />
+```
+python testbed_regression.py
+```
+Finally, the Spearman and Kendall correlations, alongside the Mean-Squared Error over the 10% models from the testbed, are calculated through: <br /> 
+```
+python Testbed_Correlations.py
+```
+
 # Code Acknowledgements
 
 - https://github.com/silvada95/ReYOLOv8
