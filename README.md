@@ -50,9 +50,8 @@ The preprocessed versions from the GEN1 and PeDRo datasets adopted in this work 
 
 [preprocessed datasets](https://drive.google.com/file/d/1BwZU5eHsHk0yK0UPbwnz_huDHUF0uROY/view?usp=sharing)
 
-# Training 
+# Single-GPU Training 
 
-# Single-gpu
 ```
 python train.py --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --clip_stride ${CLIP_STRIDE}
 ```
@@ -83,7 +82,7 @@ W_Decay = W0*Batch_size*Clip_Length/NBS
 ```
 Where **W0** is the weight decay defined in the hyperparameter files and **W_Decay** is the one adopted during training (and reported in the paper)
 
-# Multi-gpu
+# Multi-GPU Training
 ```
 torchrun --nnodes 1  --nproc_per_node ${GPUS}  train.py --device ${LIST_OF_GPUS} --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --clip_stride ${CLIP_STRIDE}
 ```
