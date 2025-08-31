@@ -6,6 +6,7 @@ import time
 
 
 def taf_cuda(x, y, t, p, shape, volume_bins, past_volume):
+    # from https://github.com/HarmoniaLeo/FRLW-EvD/blob/66fa1b7b53399bf4534d10dc81a6db457bc62bbb/generate_taf.py#L18
     tick = time.time()
     H, W = shape
 
