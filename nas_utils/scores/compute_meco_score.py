@@ -13,6 +13,7 @@ from ModelDebug import NAS_MEASURE_MODEL
 
 
 class Jocab_Scorer:
+    # https://github.com/HamsterMimi/MeCo/blob/0d830dd2f639f9d1ba3b5831a65df768d70fc93b/correlation/foresight/pruners/measures/meco.py#L25
     def __init__(self, gpu):
         self.gpu = gpu
         self.hidden_states = {"0": torch.empty(0), "1": torch.empty(0), "2": torch.empty(0), "3": torch.empty(0)}
@@ -62,6 +63,7 @@ class Jocab_Scorer:
         
        
 def compute_meco_score(model, ch, batch, imgsz, device):
+ # https://github.com/HamsterMimi/MeCo/blob/0d830dd2f639f9d1ba3b5831a65df768d70fc93b/correlation/foresight/pruners/measures/meco.py#L25
  scorer = Jocab_Scorer(device)
 
 
