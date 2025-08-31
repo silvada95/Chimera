@@ -191,6 +191,7 @@ def init_model(model, method='kaiming_norm_fanin'):
 
 
 def compute_aznas_score(model, gpu, event_data, files, encoding, ch, actual_res, target_res, batch_size, init_method = 'kaiming_norm_fanin', fp16=False):
+    #https://github.com/cvlab-yonsei/AZ-NAS/blob/5e6683a2cfa5c6d0dc34a1317a842497ba7eae47/NB201/ZeroShotProxy/compute_az_nas_score.py#L109
     model.train()
     model.cuda()
     info = {}
