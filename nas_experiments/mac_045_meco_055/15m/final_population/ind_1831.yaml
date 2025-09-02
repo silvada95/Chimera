@@ -1,0 +1,33 @@
+nc: 80
+depth_multiple: 1.0
+width_multiple: 1.0
+act: nn.SiLU()
+backbone:
+ - [-1,1, Conv, [44,3,2]] #0-P1/2
+ - [-1,1, Conv, [74,3,2]] #1-P2/4
+ - [-1,3, C2f, [74,True]]
+ - [-1,1, Conv_LSTM, [74]]
+ - [-1,1, Conv, [148,3,2]] #4-P3/8
+ - [-1,3, C2f, [148,True]]
+ - [-1,1, Conv_LSTM, [148]]
+ - [-1,1, Conv, [213,3,2]] #7-P4/16
+ - [-1,1, C2f, [213,True]]
+ - [-1,1, Conv_LSTM, [213]]
+ - [-1,1, Conv, [216,3,2]] #10-P5/16
+ - [-1,2, C2f, [216,True]]
+ - [-1,1, Conv_LSTM, [216]]
+ - [-1,1, SPPF, [216,5]]
+head:
+ - [-1, 1, nn.Upsample, [None, 2, nearest]]
+ - [[-1, 9], 1, Concat, [1]]  # cat backbone P4
+ - [-1,1,C2f, [352]]
+ - [-1, 1, nn.Upsample, [None, 2, nearest]]
+ - [[-1, 6], 1, Concat, [1]]  # cat backbone P3
+ - [-1,1,C2f, [176]] # P3/8-small
+ - [-1, 1, Conv, [176, 3, 2]]
+ - [[-1, 16], 1, Concat, [1]] # cat head P4
+ - [-1,1,C2f, [352]] # P4/16-Medium
+ - [-1, 1, Conv, [352, 3, 2]]
+ - [[-1, 13], 1, Concat, [1]] # cat head P5
+ - [-1,1,C2f, [528]] # P5/32-Large
+ - [[19, 22, 25], 1, Detect, [nc]]  # Detect(P3, P4, P5)
