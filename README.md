@@ -95,7 +95,7 @@ where: <br />
 
 # Analysis of the Chimera Testbed
 
-The reported results from the paper related to the Chimera Testbed are stored into the "Testbed" sub-folder. The file "testbed_results.csv" has all the proxies and training results from the testbed models. <br />
+The reported results from the paper related to the Chimera Testbed are stored in the "Testbed" sub-folder. The file "testbed_results.csv" has all the proxies and training results from the testbed models. <br />
 ```
 cd Testbed
 ```
@@ -103,7 +103,7 @@ The first step is to check the distribution of the mAPs across the different eve
 ```
 python plot_map_format.py
 ```
-Then, you can check the different weights derivated through Regression Trees in the paper: <br />
+Then, you can check the different weights derived through Regression Trees in the paper: <br />
 ```
 python testbed_regression.py
 ```
@@ -111,6 +111,10 @@ Finally, the Spearman and Kendall correlations, alongside the Mean-Squared Error
 ```
 python Testbed_Correlations.py
 ```
+
+# Checking the NAS experiments
+
+The folder "nas_experiments" contains more details about some NAS experiments, including tests with different weights. The experiments related to the final reported architectures are inside the sub-folder "macs035_meco065". Inside each folder, there are, for each parameter constraint adopted, the final population, the log with the scores for each of them, and the weights related to the top-5 ranked architectures from the ZS-NAS search after being trained with the PeDRo dataset. 
 
 # Code Acknowledgements
 
