@@ -66,19 +66,6 @@ LIBRARY = {
 "head_multiplier" : [1.0, 1.25, 1.50,2.0]
 }
 
-
-#LIBRARY = {
-#"block": ["MambaVisionLayer","C2f",'MaxVitAttentionPairCl', "WaveMLPLayer"],
-#"Memory_cell": ["Conv_LSTM"],
-#"Channels" : [12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48],
-#"Repeats" : [1,2,3],
-#"Multiplier" : [1.0, 1.10, 1.15, 1.20 ,1.25, 1.30,  1.35, 1.40, 1.45,1.50, 1.55, 1.60, 1.65, 1.70, 1.75, 1.80, 1.85, 1.90, 1.95, 2.00],
-#"backbone_blocks" :  14,
-#"num_heads" : [1,2,3],
-#"head_multiplier" : [1.0, 1.25, 1.50,2.0]
-#}
-
-
 POPULATION_SIZE = args.population
 ITERATIONS = args.iterations
 MAX_SIZE = args.max_size*1000000
