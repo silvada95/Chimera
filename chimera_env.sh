@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # Configuration
-ENV_NAME="chimera_env"
+ENV_NAME="chimera_env4"
 YML_FILE=""
 REUSE="0"
 CUDA_TOOLKIT_VERSION="11.8"
@@ -52,7 +52,7 @@ if [[ "${CREATE_YML}" == "1" ]]; then
   
   if [[ "${YML_TYPE}" == "pytorch" ]]; then
     cat > "${YML_FILE}" <<EOF
-name: chimera_env
+name: chimera_env4
 channels:
   - pytorch
   - nvidia
@@ -79,6 +79,7 @@ dependencies:
       - timm==1.0.9
       - wandb==0.17.7
       - matplotlib==3.7.0
+      - seaborn==0.13.2
       - pandas==2.1.0
       - scikit-learn==1.3.0
       - scipy==1.14.1
@@ -92,7 +93,7 @@ dependencies:
 EOF
   elif [[ "${YML_TYPE}" == "conda-forge" ]]; then
     cat > "${YML_FILE}" <<EOF
-name: chimera_env
+name: chimera_env4
 channels:
   - conda-forge
   - nvidia
@@ -117,6 +118,7 @@ dependencies:
       - timm==1.0.9
       - wandb==0.17.7
       - matplotlib==3.7.0
+      - seaborn==0.13.2
       - pandas==2.1.0
       - scikit-learn==1.3.0
       - scipy==1.14.1
@@ -404,6 +406,14 @@ except Exception as e:
     print(f'h5py/hdf5plugin: ERROR - {e}')
     sys.exit(1)
 
+try:
+    import seaborn, matplotlib
+    print(f'seaborn: {seaborn.__version__}')
+    print(f'matplotlib: {matplotlib.__version__}')
+except Exception as e:
+    print(f'seaborn/matplotlib: ERROR - {e}')
+    sys.exit(1)
+
 print('\\n✓ All components successfully installed with GPU support!')
 "
 
@@ -415,4 +425,6 @@ echo ""
 echo "To activate the environment in a new terminal:"
 echo "  conda activate ${ENV_NAME}"
 echo "  export TORCH_CUDA_ARCH_LIST=\"${ARCH_LIST}\""
+
+
 
