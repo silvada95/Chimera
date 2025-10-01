@@ -1,9 +1,9 @@
 # Chimera - NAS for Event-Based Object Detection
 
-This repository contains the source code for "Chimera: A Block-Based Neural Architecture Search Framework for Event-Based Object Detection", accepted for publication in the Frontiers in Artificial Intelligence journal. <br/>
+This repository contains the source code for "Chimera: A Block-Based Neural Architecture Search Framework for Event-Based Object Detection", published in the Frontiers in Artificial Intelligence journal. <br/>
 ![GEN1 results](images/cover.png) <br/>
 You can read the full paper on: <br/>
-[Outdated Arxiv Paper - to be updated soon](https://arxiv.org/pdf/2412.19646?) <br/>
+[Chimera paper](https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2025.1644889/full) <br/>
 
 # Setting up the environment 
 ```
