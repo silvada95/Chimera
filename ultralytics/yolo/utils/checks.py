@@ -139,12 +139,6 @@ def check_font(font='Arial.ttf'):
     if any(matches):
         return matches[0]
 
-    # Download to USER_CONFIG_DIR if missing
-    url = f'https://ultralytics.com/assets/{name}'
-    if downloads.is_url(url):
-        downloads.safe_download(url=url, file=file)
-        return file
-
 
 def check_online() -> bool:
     """
