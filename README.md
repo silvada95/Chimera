@@ -7,7 +7,7 @@ You can read the full paper on: <br/>
 
 # Setting up the environment 
 ```
-conda env create -f chimera_env.yml 
+bash chimera_env.sh --create-yml pytorch
 ```
 
 # Executing Chimera-NAS
