@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # Configuration
-ENV_NAME="chimera_env4"
+ENV_NAME="chimera_env"
 YML_FILE=""
 REUSE="0"
 CUDA_TOOLKIT_VERSION="11.8"
@@ -52,7 +52,7 @@ if [[ "${CREATE_YML}" == "1" ]]; then
   
   if [[ "${YML_TYPE}" == "pytorch" ]]; then
     cat > "${YML_FILE}" <<EOF
-name: chimera_env4
+name: chimera_env
 channels:
   - pytorch
   - nvidia
@@ -92,7 +92,7 @@ dependencies:
 EOF
   elif [[ "${YML_TYPE}" == "conda-forge" ]]; then
     cat > "${YML_FILE}" <<EOF
-name: chimera_env4
+name: chimera_env
 channels:
   - conda-forge
   - nvidia
@@ -415,3 +415,4 @@ echo ""
 echo "To activate the environment in a new terminal:"
 echo "  conda activate ${ENV_NAME}"
 echo "  export TORCH_CUDA_ARCH_LIST=\"${ARCH_LIST}\""
+
