@@ -54,7 +54,7 @@ The preprocessed versions from the GEN1 and PeDRo datasets adopted in this work 
 # Single-GPU Training 
 
 ```
-python train.py --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --clip_stride ${CLIP_STRIDE} --img ${IMGH} ${IMGW}
+python train.py --batch ${BATCH} --nbs ${BATCH//2} --epochs ${NUM_EPOCH} --data ${DATASET}.yaml  --model ${MODEL_NAME}.yaml --channels ${CH} --name ${WANDB_RUN_NAME} --project ${WANDB_PROJECT_NAME}  --hyp ${HYP}.yaml --zoom_out ${Z} --flip ${F} --val_epoch ${VAL_EPOCH} --clip_length ${CLIP_LENGTH} --img ${IMGH} ${IMGW}
 ```
 where:
 
@@ -67,7 +67,6 @@ where:
 **Z**: Zoom-out probability <br />
 **VAL_EPOCH**: Number of epochs to perform validation <br />
 **CLIP_LENGTH**: Length of the clips used for training <br />
-**CLIP_STRIDE**: Distance between different clips. If equal to CLIP_LENGTH, clips will not present overlap. <br />
 **IMGH**, **IMGW**: Image size. We adopted IMGH=256, IMGW=320 <br />
 
 To accelerate the training, we adopted some tricks:  <br />
