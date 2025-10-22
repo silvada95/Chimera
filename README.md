@@ -121,4 +121,4 @@ The folder "nas_experiments" contains more details about some NAS experiments, i
 
 # Cite this work
 
-To be uploaded soon
+Silva, D. A., Elsheikh, A., Smagulova, K., Fouda, M., & Eltawil, A. M. (2025). Chimera: a block-based neural architecture search framework for event-based object detection. Frontiers in Artificial Intelligence, 8, 1644889.
